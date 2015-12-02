@@ -3,9 +3,10 @@ require_relative 'z_order'
 
 class Player
 
-	def initialize
-		@x = @y = @vel_x = @vel_y = 0.0
-		@angle = 180.0
+	def initialize(x, y, angle)
+		@x = @y
+		@y = y
+		@angle = angle
 		@score = 0
 		@image = Gosu::Image.new("images/ship.png")
 	end
