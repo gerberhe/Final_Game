@@ -34,6 +34,9 @@ class Player
 	end
 
 	def direction_right
+		if @angle == 0.0
+			@angle = 360.0
+		end
 		if @angle < 270.0
 			@angle += 10.0
 			if @angle == 270.0
@@ -60,7 +63,7 @@ class Player
 				@angle += 10.0
 			end
 			if @angle == 360.0
-				@angle = 360.0
+				@angle = 0.0
 			end
 		end
 	end
