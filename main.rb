@@ -1,6 +1,7 @@
 require "gosu"
 require_relative 'z_order'
 require_relative 'player'
+require_relative 'obstacles'
 
 class Window < Gosu::Window
 
@@ -50,6 +51,8 @@ class Window < Gosu::Window
 	end
 
 	def moving_down
+		@obstacle = Obstacle.new(0)
+		@obstacle.draw
 		@player.direction_up
 		@bg_x = 0
 		@background.draw(@bg_x, @bg_y, ZOrder::BACKGROUND)
@@ -65,6 +68,7 @@ class Window < Gosu::Window
 	end
 
 	def moving_right
+		@obstacle = Obstacle.new(1)
 		@player.direction_right
 		@bg_y = 0
 		@background.draw(@bg_x, @bg_y, ZOrder::BACKGROUND)
@@ -80,6 +84,7 @@ class Window < Gosu::Window
 	end
 
 	def moving_up
+		@obstacle = Obstacle.new(2)
 		@player.direction_down
 		@bg_x = 0
 		@background.draw(@bg_x, @bg_y, ZOrder::BACKGROUND)
@@ -95,6 +100,7 @@ class Window < Gosu::Window
 	end
 
 	def moving_left
+		@obstacle = Obstacle.new(3)
 		@player.direction_left
 		@bg_y = 0
 		@background.draw(@bg_x, @bg_y, ZOrder::BACKGROUND)
