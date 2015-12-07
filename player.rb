@@ -3,6 +3,8 @@ require_relative 'z_order'
 
 class Player
 
+	COLLISION_DISTANCE = 35
+
 	def initialize(x, y, angle)
 		@x = @y
 		@y = y
@@ -80,6 +82,10 @@ class Player
 				@angle = 90.0
 			end
 		end
+	end
+
+	def colliding?(obstacle)
+		Gosu::distance(@x, @y, @obstacle.x, @obstacle.y) < COLLISION_DISTANCE
 	end
 
 end

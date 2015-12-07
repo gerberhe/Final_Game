@@ -1,34 +1,37 @@
 require "gosu"
+require_relative 'z_order'
 
 class Obstacle
 
-	def initialize(type)
+	def initialize(type, x, y)
 		@type = type
-		@obstacle1 = Gosu::Image.new("images/obstacle1.png")
-		@obstacle2 = Gosu::Image.new("images/obstacle2.png")
-		@x = @y = 0
+		@obstacle = Gosu::Image.new("images/obstacle.jpg")
+		@x = x
+		@y = y
 	end
 
 	def draw
 		if @type == 0
-			@x = 240
-			@y = -150
-			@num = rand(0..1)
-			if @num <= 0.5
-				@obstacle1.draw(@x, @y, ZOrder::OBSTACLE)
-			elsif @num > 0.5 && @num <= 1.0
-				@obstacle2.draw(@x, @y, ZOrder::OBSTACLE)
-			end
-			@obstacle1.draw(@x, @y, ZOrder::OBSTACLE)
-			@y += 5
-			puts "hello"
+			@obstacle.draw(@x, @y, ZOrder::OBSTACLE)
+			@y += 3
 		elsif @type == 1
-
+			@obstacle.draw_rot(@x, @y, ZOrder::OBSTACLE, 90)
+			@x -= 3
 		elsif @type == 2
-
+			@obstacle.draw(@x, @y, ZOrder::OBSTACLE)
+			@y -= 3
 		elsif @type == 3
-
+			@obstacle.draw_rot(@x, @y, ZOrder::OBSTACLE, -90)
+			@x += 3
 		end
+	end
+
+	def x
+		@x
+	end
+
+	def y
+		@y
 	end
 
 end

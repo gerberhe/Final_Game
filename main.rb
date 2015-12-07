@@ -21,6 +21,8 @@ class Window < Gosu::Window
 		@right_bg_x = 480
 		@left_bg_x = -480
 
+		@temp = 0
+
 		@direction = 0
 		@background = Gosu::Image.new("images/space.jpg")
 		@background2 = Gosu::Image.new("images/space.jpg")
@@ -32,27 +34,57 @@ class Window < Gosu::Window
 	end
 
 	def update
-		@direction = 0 if Gosu::button_down? Gosu::KbUp
-		@direction = 1 if Gosu::button_down? Gosu::KbRight
-		@direction = 2 if Gosu::button_down? Gosu::KbDown
-		@direction = 3 if Gosu::button_down? Gosu::KbLeft
+		if Gosu::button_down? Gosu::KbUp
+			@direction = 0 
+			@temp = 0
+		end
+		if Gosu::button_down? Gosu::KbRight
+			@direction = 1 
+			@temp = 0
+		end
+		if Gosu::button_down? Gosu::KbDown
+			@direction = 2 
+			@temp = 0
+		end
+		if Gosu::button_down? Gosu::KbLeft
+			@direction = 3 
+			@temp = 0
+		end
 	end
 
 	def draw_backgrounds		
 		if @direction == 0
 			moving_down
+			if @temp == 0
+				@obstacle = Obstacle.new(0, 165, -100)
+				@temp = 1
+			end
+			@obstacle.draw
 		elsif @direction == 1
 			moving_right
+			if @temp == 0
+				@obstacle = Obstacle.new(1, 600, 240)
+				@temp = 1
+			end
+			@obstacle.draw
 		elsif @direction == 2
 			moving_up
+			if @temp == 0
+				@obstacle = Obstacle.new(2, 165, 600)
+				@temp = 1
+			end
+			@obstacle.draw
 		elsif @direction == 3
 			moving_left
+			if @temp == 0
+				@obstacle = Obstacle.new(3, -100, 240)
+				@temp = 1
+			end
+			@obstacle.draw
 		end
 	end
 
 	def moving_down
-		@obstacle = Obstacle.new(0)
-		@obstacle.draw
 		@player.direction_up
 		@bg_x = 0
 		@background.draw(@bg_x, @bg_y, ZOrder::BACKGROUND)
@@ -68,7 +100,6 @@ class Window < Gosu::Window
 	end
 
 	def moving_right
-		@obstacle = Obstacle.new(1)
 		@player.direction_right
 		@bg_y = 0
 		@background.draw(@bg_x, @bg_y, ZOrder::BACKGROUND)
@@ -84,7 +115,6 @@ class Window < Gosu::Window
 	end
 
 	def moving_up
-		@obstacle = Obstacle.new(2)
 		@player.direction_down
 		@bg_x = 0
 		@background.draw(@bg_x, @bg_y, ZOrder::BACKGROUND)
@@ -100,7 +130,6 @@ class Window < Gosu::Window
 	end
 
 	def moving_left
-		@obstacle = Obstacle.new(3)
 		@player.direction_left
 		@bg_y = 0
 		@background.draw(@bg_x, @bg_y, ZOrder::BACKGROUND)
