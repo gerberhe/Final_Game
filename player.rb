@@ -3,14 +3,13 @@ require_relative 'z_order'
 
 class Player
 
-	COLLISION_DISTANCE = 35
-
 	def initialize(x, y, angle)
 		@x = @y
 		@y = y
 		@angle = angle
 		@score = 0
 		@image = Gosu::Image.new("images/ship.png")
+		@game_over = 0
 	end
 
 	def warp(x, y)
@@ -85,7 +84,31 @@ class Player
 	end
 
 	def colliding?(obstacle)
-		Gosu::distance(@x, @y, @obstacle.x, @obstacle.y) < COLLISION_DISTANCE
+		if obstacle.direction == 0
+			if @y <= obstacle.get_y + 75
+				print "game over"
+				@game_over = 1
+			end
+		elsif obstacle.direction == 1
+			if @x >= obstacle.get_x - 50
+				print "game over"
+				@game_over = 1
+			end
+		elsif obstacle.direction == 2
+			if @y >= obstacle.get_y - 50
+				print "game over"
+				@game_over = 1
+			end
+		elsif obstacle.direction == 3
+			if @x <= obstacle.get_x + 50
+				print "game over"
+				@game_over = 1
+			end
+		end
+	end
+
+	def game_over?
+		@game_over
 	end
 
 end

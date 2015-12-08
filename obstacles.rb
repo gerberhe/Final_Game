@@ -2,12 +2,14 @@ require "gosu"
 require_relative 'z_order'
 
 class Obstacle
+	attr_reader :x, :y
 
-	def initialize(type, x, y)
+	def initialize(type, x, y, dir)
 		@type = type
 		@obstacle = Gosu::Image.new("images/obstacle.jpg")
 		@x = x
 		@y = y
+		@direction = dir
 	end
 
 	def draw
@@ -26,12 +28,16 @@ class Obstacle
 		end
 	end
 
-	def x
+	def get_x
 		@x
 	end
 
-	def y
+	def get_y
 		@y
+	end
+
+	def direction
+		@direction
 	end
 
 end

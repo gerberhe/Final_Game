@@ -56,31 +56,39 @@ class Window < Gosu::Window
 		if @direction == 0
 			moving_down
 			if @temp == 0
-				@obstacle = Obstacle.new(0, 165, -100)
+				@obstacle = Obstacle.new(0, 165, -100, 0)
 				@temp = 1
 			end
 			@obstacle.draw
 		elsif @direction == 1
 			moving_right
 			if @temp == 0
-				@obstacle = Obstacle.new(1, 600, 240)
+				@obstacle = Obstacle.new(1, 600, 240, 1)
 				@temp = 1
 			end
 			@obstacle.draw
 		elsif @direction == 2
 			moving_up
 			if @temp == 0
-				@obstacle = Obstacle.new(2, 165, 600)
+				@obstacle = Obstacle.new(2, 165, 600, 2)
 				@temp = 1
 			end
 			@obstacle.draw
 		elsif @direction == 3
 			moving_left
 			if @temp == 0
-				@obstacle = Obstacle.new(3, -100, 240)
+				@obstacle = Obstacle.new(3, -100, 240, 3)
 				@temp = 1
 			end
 			@obstacle.draw
+		end
+		collision
+	end
+
+	def collision
+		@player.colliding?(@obstacle)
+		if @player.game_over? == 1
+			abort
 		end
 	end
 
@@ -91,12 +99,12 @@ class Window < Gosu::Window
 		@background2.draw(@bg_x, @up_bg_y, ZOrder::BACKGROUND)
 		if @up_bg_y == 0
 				@bg_y = -480
-			end
-			if @bg_y == 0
-				@up_bg_y = -480
-			end
-			@bg_y += 5
-			@up_bg_y += 5
+		end
+		if @bg_y == 0
+			@up_bg_y = -480
+		end
+		@bg_y += 5
+		@up_bg_y += 5
 	end
 
 	def moving_right
