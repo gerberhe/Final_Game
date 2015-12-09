@@ -16,6 +16,10 @@ class Player
 		@x, @y = x, y
 	end
 
+	def score
+		@score
+	end
+
 	def draw
 		@image.draw_rot(@x, @y, ZOrder::PLAYER, @angle)
 	end
@@ -86,22 +90,18 @@ class Player
 	def colliding?(obstacle)
 		if obstacle.direction == 0
 			if @y <= obstacle.get_y + 75
-				print "game over"
 				@game_over = 1
 			end
 		elsif obstacle.direction == 1
 			if @x >= obstacle.get_x - 50
-				print "game over"
 				@game_over = 1
 			end
 		elsif obstacle.direction == 2
 			if @y >= obstacle.get_y - 50
-				print "game over"
 				@game_over = 1
 			end
 		elsif obstacle.direction == 3
 			if @x <= obstacle.get_x + 50
-				print "game over"
 				@game_over = 1
 			end
 		end
