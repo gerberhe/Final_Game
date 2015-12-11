@@ -36,7 +36,7 @@ class Obstacle
 			if @arrow_dir_num < 0.5
 				@arrow.draw_rot(@x + 70, @y, ZOrder::ARROW, 270.0)
 			elsif @arrow_dir_num >= 0.5
-				@arrow.draw_rot(@x + 60, @y - 40, ZOrder::ARROW, 90.0)
+				@arrow.draw_rot(@x + 60, @y, ZOrder::ARROW, 90.0)
 			end
 			@x -= @movement
 
@@ -46,7 +46,7 @@ class Obstacle
 			if @arrow_dir_num < 0.5
 				@arrow.draw(@x, @y + 70, ZOrder::ARROW)
 			elsif @arrow_dir_num >= 0.5
-				@arrow.draw_rot(@x - 60, @y + 60, ZOrder::ARROW, 180.0)
+				@arrow.draw_rot(@x + 70, @y + 90, ZOrder::ARROW, 180.0)
 			end
 			@y -= @movement
 

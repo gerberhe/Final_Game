@@ -33,6 +33,8 @@ class Window < Gosu::Window
 		@obstacle_speed = 3
 		@next_speedup = 20.0
 
+		@arrow_direction = 0
+
 		@direction = 0
 		@background = Gosu::Image.new("images/space.jpg")
 		@background2 = Gosu::Image.new("images/space.jpg")
@@ -105,7 +107,7 @@ class Window < Gosu::Window
 		end
 	end
 
-	def draw_backgrounds		
+	def draw_backgrounds	
 		if @direction == 0
 			moving_down
 			if @temp == 0
@@ -136,6 +138,7 @@ class Window < Gosu::Window
 			@obstacle.draw
 		end
 		collision
+		correct_direction?
 	end
 
 	def collision
@@ -200,6 +203,27 @@ class Window < Gosu::Window
 		end
 		@bg_x += @bg_move_speed
 		@right_bg_x += @bg_move_speed
+	end
+
+	def correct_direction?
+		@arrow_direction = @obstacle.arrow_dir
+		if @direction == 0
+			if @arrow_direction < 0.5
+				if Gosu::button_down? Gosu::KbLeft
+					puts "facing right"
+				end
+			elsif @arrow_direction >= 0.5
+				if Gosu::button_down? Gosu::KbRight
+					puts "facing left"
+				end
+			end
+		elsif @direction == 1
+
+		elsif @direction == 2
+
+		elsif @direction == 3
+
+		end
 	end
 
 end
