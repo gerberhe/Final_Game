@@ -5,7 +5,7 @@ require_relative 'player'
 class Obstacle
 	attr_reader :x, :y
 
-	def initialize(type, x, y, dir, player, speed)
+	def initialize(type, x, y, dir, player, speed, main_gameover)
 		@type = type
 		@obstacle = Gosu::Image.new("images/obstacle.jpg")
 		@arrow = Gosu::Image.new("images/arrow.png")
@@ -17,6 +17,8 @@ class Obstacle
 		@movement = speed
 
 		@arrow_dir_num = rand(0..1)
+
+		@main_gameover = main_gameover
 	end
 
 	def draw
@@ -81,7 +83,7 @@ class Obstacle
 	end
 
 	def no_movement
-		if @player.game_over? == 1
+		if @player.game_over? == 1 || @main_gameover == 1
 			@movement = 0
 		end
 	end

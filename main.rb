@@ -22,6 +22,7 @@ class Window < Gosu::Window
 		@left_bg_x = -480
 
 		@temp = 0
+		@temp2 = 0
 
 		@bg_move_speed = 5
 
@@ -29,6 +30,7 @@ class Window < Gosu::Window
 		@end_font = Gosu::Font.new(50)
 
 		@time = 0.0
+		@time_up = 0.020
 
 		@obstacle_speed = 3
 		@next_speedup = 20.0
@@ -38,6 +40,8 @@ class Window < Gosu::Window
 		@direction = 0
 		@background = Gosu::Image.new("images/space.jpg")
 		@background2 = Gosu::Image.new("images/space.jpg")
+
+		@game_over = 0
 	end
 
 	def draw
@@ -46,14 +50,32 @@ class Window < Gosu::Window
 		@font.draw("Time Survived: #{@time.to_i}", 10, 10, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
 		if @player.game_over? == 1
 			@end_font.draw("Game Over!", 120, 210, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
+			@font.draw("You Hit a Wall!", 180, 250, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
+			@time_up = 0
+		end
+		if @game_over == 1
+			@end_font.draw("Game Over!", 120, 210, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
+			@font.draw("You Went the Wrong Direction!", 120, 250, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
+			@time_up = 0
 		end
 	end
 
 	def update
-		if @player.game_over? == 0
+		if @player.game_over? == 0 || @game_over == 0
 			if @direction != 2
 				if @direction == 0
-
+					if @temp2 == 1
+						@arrow_direction = @obstacle.arrow_dir
+						if @arrow_direction < 0.5
+							if Gosu::button_down? Gosu::KbLeft
+								@game_over = 1
+							end
+						elsif @arrow_direction >= 0.5
+							if Gosu::button_down? Gosu::KbRight
+								@game_over = 1
+							end
+						end
+					end
 				else
 					if Gosu::button_down? Gosu::KbUp
 						@direction = 0 
@@ -63,7 +85,9 @@ class Window < Gosu::Window
 			end
 			if @direction != 3
 				if @direction == 1
+					if @temp2 == 1
 
+					end
 				else
 					if Gosu::button_down? Gosu::KbRight
 						@direction = 1 
@@ -73,7 +97,9 @@ class Window < Gosu::Window
 			end
 			if @direction != 0
 				if @direction == 2
+					if @temp2 == 1
 
+					end
 				else
 					if Gosu::button_down? Gosu::KbDown
 						@direction = 2 
@@ -83,7 +109,9 @@ class Window < Gosu::Window
 			end
 			if @direction != 1
 				if @direction == 3
+					if @temp2 == 1
 
+					end
 				else
 					if Gosu::button_down? Gosu::KbLeft
 						@direction = 3 
@@ -91,15 +119,15 @@ class Window < Gosu::Window
 					end
 				end
 			end
+		end
 
-			@time += 0.020
+		@time += @time_up
 
-			if @next_speedup >= 100.0
-				@obstacle_speed = 8
-			elsif @time >= @next_speedup
-				@obstacle_speed += 1
-				@next_speedup += 20.0
-			end
+		if @next_speedup >= 100.0
+			@obstacle_speed = 8
+		elsif @time >= @next_speedup
+			@obstacle_speed += 1
+			@next_speedup += 20.0
 		end
 
 		if @player.game_over? == 1
@@ -111,34 +139,34 @@ class Window < Gosu::Window
 		if @direction == 0
 			moving_down
 			if @temp == 0
-				@obstacle = Obstacle.new(0, 165, -150, 0, @player, @obstacle_speed)
+				@obstacle = Obstacle.new(0, 165, -150, 0, @player, @obstacle_speed, @game_over)
 				@temp = 1
 			end
 			@obstacle.draw
 		elsif @direction == 1
 			moving_right
 			if @temp == 0
-				@obstacle = Obstacle.new(1, 600, 240, 1, @player, @obstacle_speed)
+				@obstacle = Obstacle.new(1, 600, 240, 1, @player, @obstacle_speed, @game_over)
 				@temp = 1
 			end
 			@obstacle.draw
 		elsif @direction == 2
 			moving_up
 			if @temp == 0
-				@obstacle = Obstacle.new(2, 165, 600, 2, @player, @obstacle_speed)
+				@obstacle = Obstacle.new(2, 165, 600, 2, @player, @obstacle_speed, @game_over)
 				@temp = 1
 			end
 			@obstacle.draw
 		elsif @direction == 3
 			moving_left
 			if @temp == 0
-				@obstacle = Obstacle.new(3, -100, 240, 3, @player, @obstacle_speed)
+				@obstacle = Obstacle.new(3, -100, 240, 3, @player, @obstacle_speed, @game_over)
 				@temp = 1
 			end
 			@obstacle.draw
 		end
 		collision
-		correct_direction?
+		@temp2 = 1
 	end
 
 	def collision
@@ -181,13 +209,13 @@ class Window < Gosu::Window
 		@background.draw(@bg_x, @bg_y, ZOrder::BACKGROUND)
 		@background2.draw(@bg_x, @up_bg_y, ZOrder::BACKGROUND)
 		if @up_bg_y == 0
-				@bg_y = 480
-			end
-			if @bg_y == 0
-				@up_bg_y = 480
-			end
-			@bg_y -= @bg_move_speed
-			@up_bg_y -= @bg_move_speed
+			@bg_y = 480
+		end
+		if @bg_y == 0
+			@up_bg_y = 480
+		end
+		@bg_y -= @bg_move_speed
+		@up_bg_y -= @bg_move_speed
 	end
 
 	def moving_left
@@ -203,27 +231,6 @@ class Window < Gosu::Window
 		end
 		@bg_x += @bg_move_speed
 		@right_bg_x += @bg_move_speed
-	end
-
-	def correct_direction?
-		@arrow_direction = @obstacle.arrow_dir
-		if @direction == 0
-			if @arrow_direction < 0.5
-				if Gosu::button_down? Gosu::KbLeft
-					puts "facing right"
-				end
-			elsif @arrow_direction >= 0.5
-				if Gosu::button_down? Gosu::KbRight
-					puts "facing left"
-				end
-			end
-		elsif @direction == 1
-
-		elsif @direction == 2
-
-		elsif @direction == 3
-
-		end
 	end
 
 end
