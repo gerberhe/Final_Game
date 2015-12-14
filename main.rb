@@ -42,12 +42,17 @@ class Window < Gosu::Window
 		@background2 = Gosu::Image.new("images/space.jpg")
 
 		@game_over = 0
+		@high_score = 0
+
+		@file = File.open("highscore.txt", "r")
+		@highscore = @file.read.split("\n")
 	end
 
 	def draw
 		@player.draw
 		draw_backgrounds
 		@font.draw("Time Survived: #{@time.to_i}", 10, 10, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
+		@font.draw("High Score Time Survived: #{@highscore[0].to_i}", 10, 40, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
 		if @player.game_over? == 1
 			@end_font.draw("Game Over!", 120, 210, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
 			@font.draw("You Hit a Wall!", 180, 250, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
@@ -66,6 +71,7 @@ class Window < Gosu::Window
 				if @direction == 0
 					if @temp2 == 1
 						@arrow_direction = @obstacle.arrow_dir
+						puts @arrow_direction
 						if @arrow_direction < 0.5
 							if Gosu::button_down? Gosu::KbLeft
 								@game_over = 1
@@ -86,7 +92,17 @@ class Window < Gosu::Window
 			if @direction != 3
 				if @direction == 1
 					if @temp2 == 1
-
+						@arrow_direction = @obstacle.arrow_dir
+						puts @arrow_direction
+						if @arrow_direction < 0.5
+							if Gosu::button_down? Gosu::KbDown
+								@game_over = 1
+							end
+						elsif @arrow_direction >= 0.5
+							if Gosu::button_down? Gosu::KbUp
+								@game_over = 1
+							end
+						end
 					end
 				else
 					if Gosu::button_down? Gosu::KbRight
@@ -98,7 +114,19 @@ class Window < Gosu::Window
 			if @direction != 0
 				if @direction == 2
 					if @temp2 == 1
-
+						@arrow_direction = @obstacle.arrow_dir
+						puts @arrow_direction
+						if @arrow_direction < 0.5
+							if Gosu::button_down? Gosu::KbLeft
+								@game_over = 1
+								puts "hello"
+							end
+						elsif @arrow_direction >= 0.5
+							if Gosu::button_down? Gosu::KbRight
+								@game_over = 1
+								puts "hello"
+							end
+						end
 					end
 				else
 					if Gosu::button_down? Gosu::KbDown
@@ -110,7 +138,17 @@ class Window < Gosu::Window
 			if @direction != 1
 				if @direction == 3
 					if @temp2 == 1
-
+						@arrow_direction = @obstacle.arrow_dir
+						puts @arrow_direction
+						if @arrow_direction < 0.5
+							if Gosu::button_down? Gosu::KbUp
+								@game_over = 1
+							end
+						elsif @arrow_direction >= 0.5
+							if Gosu::button_down? Gosu::KbDown
+								@game_over = 1
+							end
+						end
 					end
 				else
 					if Gosu::button_down? Gosu::KbLeft
@@ -132,6 +170,15 @@ class Window < Gosu::Window
 
 		if @player.game_over? == 1
 			@bg_move_speed = 0
+		end
+
+		if @player.game_over? == 1 || @game_over == 1
+			@high_score = @highscore[0].to_i
+			@file2 = File.open("highscore.txt", "w")
+			if @time >= @high_score
+				@file2.write(@time)
+				@file2.close
+			end
 		end
 	end
 
