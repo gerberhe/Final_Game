@@ -83,7 +83,7 @@ class Obstacle
 	end
 
 	def no_movement
-		if @player.game_over? == 1 || @main_gameover == 1
+		if @player.game_over == 1 || @main_gameover == 1
 			@movement = 0
 		end
 	end

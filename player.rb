@@ -22,67 +22,76 @@ class Player
 
 	def draw
 		@image.draw_rot(@x, @y, ZOrder::PLAYER, @angle)
+		puts @game_over
 	end
 
 	def direction_up
-		if @angle < 180.0
-			@angle += 10.0
-			if @angle == 180.0
-				@angle = 180.0
-			end
-		elsif @angle > 180.0
-			@angle -= 10.0
-			if @angle == 180.0
-				@angle = 180.0
+		if @game_over == 0
+			if @angle < 180.0
+				@angle += 10.0
+				if @angle == 180.0
+					@angle = 180.0
+				end
+			elsif @angle > 180.0
+				@angle -= 10.0
+				if @angle == 180.0
+					@angle = 180.0
+				end
 			end
 		end
 	end
 
 	def direction_right
-		if @angle == 0.0
-			@angle = 360.0
-		end
-		if @angle < 270.0
-			@angle += 10.0
-			if @angle == 270.0
-				@angle = 270.0
+		if @game_over == 0
+			if @angle == 0.0
+				@angle = 360.0
 			end
-		elsif @angle > 270.0
-			@angle -= 10.0
-			if @angle == 270.0
-				@angle = 270.0
+			if @angle < 270.0
+				@angle += 10.0
+				if @angle == 270.0
+					@angle = 270.0
+				end
+			elsif @angle > 270.0
+				@angle -= 10.0
+				if @angle == 270.0
+					@angle = 270.0
+				end
 			end
 		end
 	end
 
 	def direction_down
-		if @angle <= 180.0
-			if @angle != 0.0
-				@angle -= 10.0
-			end
-			if @angle == 0.0
-				@angle = 0.0
-			end
-		elsif @angle > 180.0
-			if @angle != 360.0
-				@angle += 10.0
-			end
-			if @angle == 360.0
-				@angle = 0.0
+		if @game_over == 0
+			if @angle <= 180.0
+				if @angle != 0.0
+					@angle -= 10.0
+				end
+				if @angle == 0.0
+					@angle = 0.0
+				end
+			elsif @angle > 180.0
+				if @angle != 360.0
+					@angle += 10.0
+				end
+				if @angle == 360.0
+					@angle = 0.0
+				end
 			end
 		end
 	end
 
 	def direction_left
-		if @angle < 90.0
-			@angle += 10.0
-			if @angle == 90.0
-				@angle = 90.0
-			end
-		elsif @angle > 90.0
-			@angle -= 10.0
-			if @angle == 90.0
-				@angle = 90.0
+		if @game_over == 0
+			if @angle < 90.0
+				@angle += 10.0
+				if @angle == 90.0
+					@angle = 90.0
+				end
+			elsif @angle > 90.0
+				@angle -= 10.0
+				if @angle == 90.0
+					@angle = 90.0
+				end
 			end
 		end
 	end
@@ -107,7 +116,7 @@ class Player
 		end
 	end
 
-	def game_over?
+	def game_over
 		@game_over
 	end
 
