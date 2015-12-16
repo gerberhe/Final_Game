@@ -105,7 +105,7 @@ class Player
 				@game_over = 1
 			end
 		elsif obstacle.direction == 2
-			if @y >= obstacle.get_y - 50
+			if @y >= obstacle.get_y - 30
 				@game_over = 1
 			end
 		elsif obstacle.direction == 3
