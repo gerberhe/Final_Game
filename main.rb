@@ -52,7 +52,7 @@ class Window < Gosu::Window
 
 	def draw
 		@player.draw
-		draw_backgrounds
+		draw_obstacles
 		@font.draw("Time Survived: #{@time.to_i}", 10, 10, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
 		@font.draw("High Score Time Survived: #{@highscore[0].to_i}", 10, 40, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
 		if @game_over == 2
@@ -187,7 +187,7 @@ class Window < Gosu::Window
 		end
 	end
 
-	def draw_backgrounds	
+	def draw_obstacles	
 		if @direction == 0
 			moving_down
 			if @temp == 0
