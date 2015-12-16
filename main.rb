@@ -55,7 +55,7 @@ class Window < Gosu::Window
 		draw_backgrounds
 		@font.draw("Time Survived: #{@time.to_i}", 10, 10, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
 		@font.draw("High Score Time Survived: #{@highscore[0].to_i}", 10, 40, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
-		if @player.game_over == 1
+		if @game_over == 2
 			@end_font.draw("Game Over!", 120, 210, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
 			@font.draw("You Hit a Wall!", 180, 250, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
 			@time_up = 0
@@ -68,7 +68,7 @@ class Window < Gosu::Window
 	end
 
 	def update
-		if @player.game_over == 0 || @game_over == 0
+		if @game_over == 0
 			check_correct_direction
 			if @direction != 2
 				if @direction == 0
@@ -121,7 +121,7 @@ class Window < Gosu::Window
 			@next_speedup += 20.0
 		end
 
-		if @player.game_over == 1 || @game_over == 1
+		if @game_over == 1 || @game_over == 2
 			@high_score = @highscore[0].to_i
 			@file2 = File.open("highscore.txt", "w")
 			if @time >= @high_score
@@ -222,7 +222,9 @@ class Window < Gosu::Window
 	end
 
 	def collision
-		@player.colliding?(@obstacle)
+		if @player.colliding?(@obstacle)
+			@game_over = 2		
+		end
 	end
 
 	def moving_down
