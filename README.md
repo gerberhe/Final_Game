@@ -11,6 +11,12 @@ $ bundle install
 1) Right click anywhere in folder, "Git Bash"
 2) Type in the following command:
 $ ruby main.rb
+
+OR
+
+Simply double-click on the file "Final Game" and the game
+will run! This file can be dragged anywhere on your computer
+to make opening the game much simpler.
 ```
 
 ##Objective of the Game

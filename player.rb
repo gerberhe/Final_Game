@@ -22,7 +22,6 @@ class Player
 
 	def draw
 		@image.draw_rot(@x, @y, ZOrder::PLAYER, @angle)
-		puts @game_over
 	end
 
 	def direction_up

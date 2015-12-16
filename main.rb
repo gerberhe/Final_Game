@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require "gosu"
 require_relative 'z_order'
 require_relative 'player'
