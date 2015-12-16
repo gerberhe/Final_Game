@@ -54,16 +54,45 @@ class Window < Gosu::Window
 		@player.draw
 		draw_obstacles
 		@font.draw("Time Survived: #{@time.to_i}", 10, 10, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
-		@font.draw("High Score Time Survived: #{@highscore[0].to_i}", 10, 40, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
+		@font.draw("High Score Time Survived: #{@highscore[0].to_i}", 10, 30, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
+		@font.draw("Press E at Any Time to Exit", 10, 50, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
 		if @game_over == 2
 			@end_font.draw("Game Over!", 120, 210, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
-			@font.draw("You Hit a Wall!", 180, 250, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
+			@font.draw("You Hit a Barrier!", 180, 250, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
 			@time_up = 0
+			@font.draw("Hit R To Restart!", 182, 270, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
+			update_highscore
+			restart
 		end
 		if @game_over == 1
 			@end_font.draw("Game Over!", 120, 210, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
 			@font.draw("You Went the Wrong Direction!", 120, 250, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
 			@time_up = 0
+			@font.draw("Hit R To Restart!", 175, 270, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
+			update_highscore
+			restart
+		end
+
+		abort if Gosu::button_down? Gosu::KbE
+	end
+
+	def restart
+		if Gosu::button_down? Gosu::KbR
+			@direction = 0
+			@game_over = 0
+			@time = 0
+			@time_up = 0.020
+			@player.set_game_over(0)
+			@obstacle = Obstacle.new(0, 165, -150, 0, @player, @obstacle_speed, @game_over)
+		end
+	end
+
+	def update_highscore
+		@high_score = @highscore[0].to_i
+		@file2 = File.open("highscore.txt", "w")
+		if @time >= @high_score
+			@file2.write(@time)
+			@file2.close
 		end
 	end
 
@@ -119,15 +148,6 @@ class Window < Gosu::Window
 		elsif @time >= @next_speedup
 			@obstacle_speed += 1
 			@next_speedup += 20.0
-		end
-
-		if @game_over == 1 || @game_over == 2
-			@high_score = @highscore[0].to_i
-			@file2 = File.open("highscore.txt", "w")
-			if @time >= @high_score
-				@file2.write(@time)
-				@file2.close
-			end
 		end
 	end
 

@@ -7,7 +7,7 @@ class Obstacle
 
 	def initialize(type, x, y, dir, player, speed, main_gameover)
 		@type = type
-		@obstacle = Gosu::Image.new("images/obstacle.jpg")
+		@obstacle = Gosu::Image.new("images/obstacle1.png")
 		@arrow = Gosu::Image.new("images/arrow.png")
 		@x = x
 		@y = y
@@ -83,9 +83,12 @@ class Obstacle
 	end
 
 	def no_movement
-		if @player.game_over == 1 || @main_gameover == 1
+		if @player.game_over == 2 || @main_gameover == 1 || @main_gameover == 2
 			@movement = 0
+		elsif @main_gameover == 0 || @player.game_over == 0
+			@movement = 3
 		end
+
 	end
 
 end

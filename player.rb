@@ -115,6 +115,10 @@ class Player
 		end
 	end
 
+	def set_game_over(num)
+		@game_over = num
+	end
+
 	def game_over
 		@game_over
 	end
